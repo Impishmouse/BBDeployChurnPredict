@@ -11,3 +11,4 @@ what environment variables exist.
 how to test predict locally and over important things
 
 
+https://github.com/ershovio/ml_model_deployment_example
