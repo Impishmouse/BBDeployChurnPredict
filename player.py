@@ -189,8 +189,7 @@ def get_day_victory_info(day_victory_data, day_prefix):
         return {day_prefix + "_vc": 0}
 
     count = day_victory_data.shape[0]
-    d = {day_prefix + "_vc": count}
-    return d
+    return {day_prefix + "_vc": count}
 
 
 def victories_data(player_id, victories_df, update_date, create_date):
