@@ -13,7 +13,7 @@ if __name__ == '__main__':
     # id:  2YJO24vzfN - pred - 0.609537681224889
     # Player$Vde4NfW9Sb	0.780923 - 0.6691001781843475
     # Player$PhxHzCG48F	0.962267 - churn:0.7833898920439313
-    player_id = "F9q0JK2Jeu"
+    player_id = "btNWH1XeEU"
     probability_player_churn = predict_churn_by_player_id(player_id)
     print(probability_player_churn)
 

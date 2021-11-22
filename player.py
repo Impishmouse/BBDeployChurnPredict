@@ -3,6 +3,7 @@ from db_connector import get_client
 from pandas import DataFrame
 import pymongo
 
+
 # define Python user-defined exceptions
 class Error(Exception):
     """Base class for other exceptions"""
@@ -12,6 +13,7 @@ class Error(Exception):
 class PlayerLost(Error):
     """Raised when the input value is too small"""
     pass
+
 
 def get_players_by_dates(collection, from_date, to_date, max_level=8):
     player_cursor = collection.find({
@@ -111,7 +113,7 @@ def get_ads_data(player_id, dialogs_df):
     if dialogs_df.empty:
         ret = {'tAd': 0,
                'mapAd': 0,
-               'pDefAd':0,}
+               'pDefAd': 0, }
         return ret
 
     player_ads = dialogs_df[(dialogs_df['_p_playerId'] == player_id) & (dialogs_df['dialogName'] == "yes_reward")]
@@ -153,7 +155,6 @@ def get_data_before_day(some_data, end_date, days_before):
 
 
 def failures_data(player_id, fails_df, update_date, create_date):
-
     if fails_df is None:
         total_fails = 0
         fails = None
@@ -183,15 +184,23 @@ def failures_data(player_id, fails_df, update_date, create_date):
     return ret
 
 
-def get_day_victory_info(dayVicData, dayPref):
-    count = dayVicData.shape[0]
-    d = {dayPref + "_vc": count}
+def get_day_victory_info(day_victory_data, day_prefix):
+    if day_victory_data is None:
+        return {day_prefix + "_vc": 0}
+
+    count = day_victory_data.shape[0]
+    d = {day_prefix + "_vc": count}
     return d
 
 
 def victories_data(player_id, victories_df, update_date, create_date):
-    vict = victories_df[(victories_df['_p_playerId'] == player_id)]
-    total_victories = vict.shape[0]
+    if victories_df is None:
+        total_victories = 0
+        vict = None
+    else:
+        vict = victories_df[(victories_df['_p_playerId'] == player_id)]
+        total_victories = vict.shape[0]
+
     date_to = update_date
     ret = {"tVic": total_victories}
 
@@ -257,7 +266,6 @@ def clear_player_data(players_df):
 
 # player_id = 'F9q0JK2Jeu'
 def get_player_full_data(player_id):
-
     start_dt = datetime.datetime.now()
 
     client = get_client()
@@ -286,7 +294,6 @@ def get_player_full_data(player_id):
     local_dt = datetime.datetime.now()
     victories_df = get_victories_by_player(player_pointer, db)
     print(f"Success get victories data for player; time: {(datetime.datetime.now() - local_dt)}")
-
 
     one_player_update = player_df['_updated_at'].iloc[0]
     one_player_create_day = player_df['_created_at'].iloc[0]
@@ -317,5 +324,5 @@ def get_player_full_data(player_id):
 
 if __name__ == "__main__":
     get_player_full_data("4QvW1Cfn08")
-#else:
+# else:
 #    print("File one executed when imported")
